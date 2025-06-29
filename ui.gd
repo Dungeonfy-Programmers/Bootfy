@@ -10,6 +10,7 @@ const PAPER = "https://fill-data.papermc.io/v1/objects/cabed3ae77cf55deba7c7d872
 var downloading = ""
 var server_up = false
 var server_pid: int
+var console = false
 
 func java_check() -> Array:
 	if DirAccess.dir_exists_absolute("user://dungeonfy/jdk-21.0.2") || DirAccess.dir_exists_absolute("user://dungeonfy/jdk-21.0.2.jdk"):
@@ -33,11 +34,11 @@ func start_server() -> void:
 	# TODO: Actually fix this because it's awful and generates a bunch of files in places they shouldn't be 
 	# e.g permissions.yml will be in the directory the exe is in, but the world file will be in the proper folder
 	# I hate Godot actually it's all godot's fault
-	# TODO: Add toggle for server console
+	# TODO: Add toggle for server console <-- DOING THIS RIGHT NOW
 	if OS.get_name() == "macOS":
-		server_pid = OS.create_process(OS.get_user_data_dir() + "/dungeonfy/jdk-21.0.2.jdk/Contents/Home/bin/java", ["-Duser.dir=" + OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "-jar", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/paper.jar", "-nogui", "-P", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins", "-S", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/spigot.yml", "-W", OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "--config", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/server.properties", "-b", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/bukkit/yml", "-w", "ul_void", "--paper-dir", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/config"])
+		server_pid = OS.create_process(OS.get_user_data_dir() + "/dungeonfy/jdk-21.0.2.jdk/Contents/Home/bin/java", ["-Duser.dir=" + OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "-jar", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/paper.jar", "-nogui", "-P", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins", "-S", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/spigot.yml", "-W", OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "--config", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/server.properties", "-b", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/bukkit/yml", "-w", "ul_void", "--paper-dir", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/config"], console)
 	else:
-		server_pid = OS.create_process(OS.get_user_data_dir() + "/dungeonfy/jdk-21.0.2/bin/java", ["-Duser.dir=" + OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "-jar", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/paper.jar", "-nogui", "-P", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins", "-S", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/spigot.yml", "-W", OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "--config", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/server.properties", "-b", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/bukkit/yml", "-w", "ul_void", "--paper-dir", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/config"])
+		server_pid = OS.create_process(OS.get_user_data_dir() + "/dungeonfy/jdk-21.0.2/bin/java", ["-Duser.dir=" + OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "-jar", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/paper.jar", "-nogui", "-P", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins", "-S", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/spigot.yml", "-W", OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "--config", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/server.properties", "-b", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/bukkit/yml", "-w", "ul_void", "--paper-dir", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/config"], console)
 	print(server_pid)
 
 func stop_server() -> void:
@@ -61,6 +62,8 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+
+	$Label2.text = "Console: " + str(console) + "\n(Windows Only,\nI'm so sorry.)"
 	# TODO: Heavily clean up this code. (Rewrite)
 
 	if $Button.disabled == true:
@@ -162,3 +165,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		$AnimationPlayer2.play("RESET")
 		$AnimationPlayer3.play("RESET")
 		manage_server()
+
+
+func _on_button_2_pressed() -> void:
+	console = !console # Design
