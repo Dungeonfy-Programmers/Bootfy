@@ -1,0 +1,64 @@
+[gd_scene load_steps=9 format=3 uid="uid://6w8txisikjyj"]
+
+[ext_resource type="Script" uid="uid://cxr3cwbamg76g" path="res://ui.gd" id="1_27fn8"]
+[ext_resource type="FontFile" uid="uid://h60fpjwv0jro" path="res://Monocraft-nerd-fonts-patched.ttc" id="1_fyqef"]
+[ext_resource type="Texture2D" uid="uid://dppodug4okhm7" path="res://dungeonfy.png" id="2_m6e0p"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xb563"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m6e0p"]
+bg_color = Color(0, 0.380392, 0.196078, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_27fn8"]
+bg_color = Color(0, 0.188235, 0.0823529, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fyqef"]
+bg_color = Color(0, 0.552941, 0.270588, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xb563"]
+bg_color = Color(0, 0.552941, 0.270588, 1)
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_27fn8")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.117647, 0.117647, 0.117647, 1)
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+offset_top = 118.0
+offset_right = -100.0
+offset_bottom = -118.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_fyqef")
+theme_override_font_sizes/font_size = 100
+theme_override_styles/focus = SubResource("StyleBoxEmpty_xb563")
+theme_override_styles/hover = SubResource("StyleBoxFlat_m6e0p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_27fn8")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_fyqef")
+theme_override_styles/normal = SubResource("StyleBoxFlat_xb563")
+text = "Start Server"
+
+[node name="Dungeonfy" type="Sprite2D" parent="."]
+position = Vector2(576, 59)
+scale = Vector2(0.71875, 0.71875)
+texture = ExtResource("2_m6e0p")
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
