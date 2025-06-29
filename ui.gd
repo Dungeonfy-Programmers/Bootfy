@@ -105,8 +105,10 @@ func _on_server_request_completed(_result: int, _response_code: int, _headers: P
 	else:
 		print("Server not saved.")
 	file.close()
-	print(OS.execute("unzip", [OS.get_data_dir() + "/bootfy/dungeonfy/server.zip", "-d", OS.get_data_dir() + "/bootfy/dungeonfy"]))
-	print(OS.get_data_dir() + "/bootfy/dungeonfy/server.zip")
+	if OS.get_name() == "Windows":
+		OS.execute("tar", ["-xf", OS.get_user_data_dir() + "/dungeonfy/server.zip", "-C", OS.get_user_data_dir() + "/dungeonfy"])
+	else:
+		OS.execute("unzip", [OS.get_data_dir() + "/bootfy/dungeonfy/server.zip", "-d", OS.get_data_dir() + "/bootfy/dungeonfy"])
 	if java_check()[1]:
 		downloading = "Java"
 		$Java.request(java_check()[0])
@@ -121,7 +123,7 @@ func _on_java_request_completed(_result: int, _response_code: int, _headers: Pac
 		var file = FileAccess.open("user://dungeonfy/java.zip", FileAccess.WRITE)
 		file.store_buffer(body)
 		file.close()
-		OS.execute("unzip", [OS.get_data_dir() + "/bootfy/dungeonfy/java.zip", "-d", OS.get_data_dir() + "/bootfy/dungeonfy"])
+		OS.execute("tar", ["-xf", OS.get_data_dir() + "/bootfy/dungeonfy/java.zip", "-C", OS.get_data_dir() + "/bootfy/dungeonfy"])
 	else:
 		var file = FileAccess.open("user://dungeonfy/java.tar.gz", FileAccess.WRITE)
 		file.store_buffer(body)
