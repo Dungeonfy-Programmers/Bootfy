@@ -1,13 +1,22 @@
-[gd_scene load_steps=9 format=3 uid="uid://6w8txisikjyj"]
+[gd_scene load_steps=20 format=3 uid="uid://xoyftw7gnvfw"]
 
-[ext_resource type="Script" uid="uid://cxr3cwbamg76g" path="res://ui.gd" id="1_27fn8"]
+[ext_resource type="Script" uid="uid://dx4vhgr1rrvw1" path="res://ui.gd" id="1_27fn8"]
 [ext_resource type="FontFile" uid="uid://h60fpjwv0jro" path="res://Monocraft-nerd-fonts-patched.ttc" id="1_fyqef"]
 [ext_resource type="Texture2D" uid="uid://dppodug4okhm7" path="res://dungeonfy.png" id="2_m6e0p"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xb563"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nltto"]
+bg_color = Color(0, 0.188235, 0.0823529, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ibotj"]
+bg_color = Color(0, 0.188235, 0.0823529, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m6e0p"]
 bg_color = Color(0, 0.380392, 0.196078, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n5ude"]
+bg_color = Color(0, 0.188235, 0.0823529, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_27fn8"]
 bg_color = Color(0, 0.188235, 0.0823529, 1)
@@ -17,6 +26,161 @@ bg_color = Color(0, 0.552941, 0.270588, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xb563"]
 bg_color = Color(0, 0.552941, 0.270588, 1)
+
+[sub_resource type="Animation" id="Animation_nltto"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Dungeonfy:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Dungeonfy:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(576, 59)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Label:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Download:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_y4yjw"]
+resource_name = "fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_waa4j"]
+resource_name = "fade_in_2"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Download:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ok7cu"]
+resource_name = "fade_out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_27fn8"]
+resource_name = "loading"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Dungeonfy:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.766667, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ibotj"]
+resource_name = "slide"
+length = 0.75
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Dungeonfy:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.733333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(576, 59), Vector2(150, 59)]
+}
+
+[sub_resource type="Animation" id="Animation_n5ude"]
+resource_name = "slide_back"
+length = 0.75
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Dungeonfy:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.75),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(150, 59), Vector2(576, 59)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ibotj"]
+_data = {
+&"RESET": SubResource("Animation_nltto"),
+&"fade_in": SubResource("Animation_y4yjw"),
+&"fade_in_2": SubResource("Animation_waa4j"),
+&"fade_out": SubResource("Animation_ok7cu"),
+&"loading": SubResource("Animation_27fn8"),
+&"slide": SubResource("Animation_ibotj"),
+&"slide_back": SubResource("Animation_n5ude")
+}
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -50,7 +214,10 @@ grow_vertical = 2
 theme_override_fonts/font = ExtResource("1_fyqef")
 theme_override_font_sizes/font_size = 100
 theme_override_styles/focus = SubResource("StyleBoxEmpty_xb563")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxFlat_nltto")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_ibotj")
 theme_override_styles/hover = SubResource("StyleBoxFlat_m6e0p")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxFlat_n5ude")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_27fn8")
 theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_fyqef")
 theme_override_styles/normal = SubResource("StyleBoxFlat_xb563")
@@ -61,4 +228,55 @@ position = Vector2(576, 59)
 scale = Vector2(0.71875, 0.71875)
 texture = ExtResource("2_m6e0p")
 
+[node name="Label" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 215.0
+offset_top = 15.0
+offset_right = 1708.0
+offset_bottom = 191.0
+scale = Vector2(0.5, 0.5)
+theme_override_fonts/font = ExtResource("1_fyqef")
+theme_override_font_sizes/font_size = 160
+text = "Downloading..."
+
+[node name="Download" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_top = 530.0
+offset_right = 2304.0
+offset_bottom = 766.0
+scale = Vector2(0.5, 0.5)
+theme_override_fonts/font = ExtResource("1_fyqef")
+theme_override_font_sizes/font_size = 80
+text = "Downloading Server... 0%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ibotj")
+}
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ibotj")
+}
+
+[node name="AnimationPlayer3" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ibotj")
+}
+
+[node name="Server" type="HTTPRequest" parent="."]
+
+[node name="Java" type="HTTPRequest" parent="."]
+
+[node name="Paper" type="HTTPRequest" parent="."]
+
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="animation_changed" from="AnimationPlayer" to="." method="_on_animation_player_animation_changed"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="request_completed" from="Server" to="." method="_on_server_request_completed"]
+[connection signal="request_completed" from="Java" to="." method="_on_java_request_completed"]
+[connection signal="request_completed" from="Paper" to="." method="_on_paper_request_completed"]

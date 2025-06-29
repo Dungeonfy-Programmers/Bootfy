@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Bootfy"
-config/description="Server Launch Helper for Dungeonfy"
+config/description="Server Launch Helper for Dungeonfy."
 run/main_scene="uid://6w8txisikjyj"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/bg_color=Color(0.117647, 0.117647, 0.117647, 1)
