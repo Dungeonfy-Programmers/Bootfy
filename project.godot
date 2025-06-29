@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Bootfy"
 config/description="Server Launch Helper for Dungeonfy."
-run/main_scene="uid://6w8txisikjyj"
+run/main_scene="uid://xoyftw7gnvfw"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="bootfy"
 config/features=PackedStringArray("4.4", "GL Compatibility")
@@ -29,3 +29,4 @@ tls/enable_tls_v1.3=false
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
