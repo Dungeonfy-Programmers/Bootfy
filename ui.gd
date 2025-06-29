@@ -33,7 +33,7 @@ func start_server() -> void:
 	# TODO: Actually fix this because it's awful and generates a bunch of files in places they shouldn't be 
 	# e.g permissions.yml will be in the directory the exe is in, but the world file will be in the proper folder
 	# I hate Godot actually it's all godot's fault
-	server_pid = OS.create_process(OS.get_user_data_dir() + "/dungeonfy/jdk-21.0.2/bin/java", ["-Duser.dir=" + OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "-jar", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/paper.jar", "-nogui", "-P", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins", "-S", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/spigot.yml", "-W", OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "--config", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/server.properties", "-b", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/bukkit/yml", "-w", "ul_void", "--paper-dir", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/config"], true)
+	server_pid = OS.create_process(OS.get_user_data_dir() + "/dungeonfy/jdk-21.0.2/bin/java", ["-Duser.dir=" + OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "-jar", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/paper.jar", "-nogui", "-P", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins", "-S", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/spigot.yml", "-W", OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "--config", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/server.properties", "-b", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/bukkit/yml", "-w", "ul_void", "--paper-dir", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/config"])
 	print(server_pid)
 
 func stop_server() -> void:
