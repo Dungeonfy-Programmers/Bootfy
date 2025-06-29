@@ -13,11 +13,17 @@ config_version=5
 config/name="Bootfy"
 config/description="Server Launch Helper for Dungeonfy."
 run/main_scene="uid://6w8txisikjyj"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="bootfy"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/bg_color=Color(0.117647, 0.117647, 0.117647, 1)
 boot_splash/show_image=false
 boot_splash/fullsize=false
 config/icon="uid://dppodug4okhm7"
+
+[network]
+
+tls/enable_tls_v1.3=false
 
 [rendering]
 

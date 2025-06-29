@@ -1,6 +1,6 @@
 [gd_scene load_steps=20 format=3 uid="uid://xoyftw7gnvfw"]
 
-[ext_resource type="Script" uid="uid://dx4vhgr1rrvw1" path="res://ui.gd" id="1_27fn8"]
+[ext_resource type="Script" uid="uid://cxr3cwbamg76g" path="res://ui.gd" id="1_27fn8"]
 [ext_resource type="FontFile" uid="uid://h60fpjwv0jro" path="res://Monocraft-nerd-fonts-patched.ttc" id="1_fyqef"]
 [ext_resource type="Texture2D" uid="uid://dppodug4okhm7" path="res://dungeonfy.png" id="2_m6e0p"]
 
@@ -126,6 +126,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_27fn8"]
 resource_name = "loading"
 length = 1.5
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -275,7 +276,6 @@ libraries = {
 [node name="Paper" type="HTTPRequest" parent="."]
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
-[connection signal="animation_changed" from="AnimationPlayer" to="." method="_on_animation_player_animation_changed"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="request_completed" from="Server" to="." method="_on_server_request_completed"]
 [connection signal="request_completed" from="Java" to="." method="_on_java_request_completed"]
