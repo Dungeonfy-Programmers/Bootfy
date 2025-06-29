@@ -14,3 +14,12 @@ export_credentials.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Paper Stuff
+banned-* 
+commands.yml 
+help.yml 
+ops.json 
+permissions.yml 
+wepif.yml 
+whitelist.json

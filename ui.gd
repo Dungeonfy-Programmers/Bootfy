@@ -8,9 +8,11 @@ const JAVA_MACOS = "https://download.java.net/java/GA/jdk21.0.2/f2283984656d49d6
 const PAPER = "https://fill-data.papermc.io/v1/objects/cabed3ae77cf55deba7c7d8722bc9cfd5e991201c211665f9265616d9fe5c77b/paper-1.20.4-499.jar"
 
 var downloading = ""
+var server_up = false
+var server_pid: int
 
 func java_check() -> Array:
-	if FileAccess.file_exists("user://dunegonfy/java.zip") || FileAccess.file_exists("user://java.tar.gz"):
+	if DirAccess.dir_exists_absolute("user://dungeonfy/jdk-21.0.2"):
 		return ["", false]
 	if OS.get_name() == "Windows":
 		return [JAVA_WIN, true]
@@ -20,8 +22,31 @@ func java_check() -> Array:
 		return [JAVA_LINUX, true]
 
 func start_server() -> void:
-	pass # TODO: Server Logic
+	$AnimationPlayer.play("button_stop")
+	$Button.text = "Stop Server"
+	server_up = true
+	
+	DirAccess.open("user://dungeonfy/dfysp-main")
+	var test = []
+	OS.execute("ls", [], test)
+	print(test)
+	# TODO: Actually fix this because it's awful and generates a bunch of files in places they shouldn't be 
+	# e.g permissions.yml will be in the directory the exe is in, but the world file will be in the proper folder
+	# I hate Godot actually it's all godot's fault
+	server_pid = OS.create_process(OS.get_user_data_dir() + "/dungeonfy/jdk-21.0.2/bin/java", ["-Duser.dir=" + OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "-jar", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/paper.jar", "-nogui", "-P", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins", "-S", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/spigot.yml", "-W", OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "--config", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/server.properties", "-b", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/bukkit/yml", "-w", "ul_void", "--paper-dir", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/config"], true)
+	print(server_pid)
 
+func stop_server() -> void:
+	$AnimationPlayer.play("button_go")
+	$Button.text = "Start Server"
+	server_up = false
+	OS.kill(server_pid)
+
+func manage_server() -> void:
+	if server_up:
+		stop_server()
+	else:
+		start_server()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -53,7 +78,7 @@ func _process(_delta: float) -> void:
 
 
 func _on_button_pressed() -> void:
-	if !FileAccess.file_exists("user://dungeonfy/server.zip"):
+	if !DirAccess.dir_exists_absolute("user://dungeonfy/dfysp-main"):
 		$Button.disabled = true 
 		$AnimationPlayer.play("slide")
 		downloading = "Server"
@@ -68,6 +93,8 @@ func _on_button_pressed() -> void:
 		$AnimationPlayer.play("slide")
 		downloading = "Paper"
 		$Paper.request(PAPER)
+	else:
+		manage_server()
 
 
 func _on_server_request_completed(_result: int, _response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
@@ -86,7 +113,7 @@ func _on_server_request_completed(_result: int, _response_code: int, _headers: P
 	else:
 		$Button.disabled = false
 		$AnimationPlayer.play("slide_back")
-		start_server()
+		manage_server()
 
 
 func _on_java_request_completed(_result: int, _response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
@@ -107,7 +134,7 @@ func _on_java_request_completed(_result: int, _response_code: int, _headers: Pac
 	else:
 		$Button.disabled = false
 		$AnimationPlayer.play("slide_back")
-		start_server()
+		manage_server()
 
 
 func _on_paper_request_completed(_result: int, _response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
@@ -117,7 +144,6 @@ func _on_paper_request_completed(_result: int, _response_code: int, _headers: Pa
 
 	$Button.disabled = false
 	$AnimationPlayer.play("slide_back")
-	start_server()
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
@@ -129,3 +155,4 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		$AnimationPlayer.play("RESET")
 		$AnimationPlayer2.play("RESET")
 		$AnimationPlayer3.play("RESET")
+		manage_server()
