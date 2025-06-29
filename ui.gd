@@ -3,8 +3,8 @@ extends Control
 
 const SERVER = "https://github.com/Dungeonfy-Programmers/dfysp/archive/refs/heads/main.zip"
 const JAVA_WIN = "https://download.java.net/java/GA/jdk21.0.2/f2283984656d49d69e91c558476027ac/13/GPL/openjdk-21.0.2_windows-x64_bin.zip"
-const JAVA_LINUX = "https://download.java.net/java/GA/jdk22/830ec9fcccef480bb3e73fb7ecafe059/36/GPL/openjdk-22_linux-x64_bin.tar.gz"
-const JAVA_MACOS = "https://download.java.net/java/GA/jdk22/830ec9fcccef480bb3e73fb7ecafe059/36/GPL/openjdk-22_macos-x64_bin.tar.gz"
+const JAVA_LINUX = "https://download.java.net/java/GA/jdk21.0.2/f2283984656d49d69e91c558476027ac/13/GPL/openjdk-21.0.2_linux-x64_bin.tar.gz"
+const JAVA_MACOS = "https://download.java.net/java/GA/jdk21.0.2/f2283984656d49d69e91c558476027ac/13/GPL/openjdk-21.0.2_macos-x64_bin.tar.gz"
 const PAPER = "https://fill-data.papermc.io/v1/objects/cabed3ae77cf55deba7c7d8722bc9cfd5e991201c211665f9265616d9fe5c77b/paper-1.20.4-499.jar"
 
 var downloading = ""
@@ -25,10 +25,9 @@ func start_server() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	print("Server Directory: " + OS.get_data_dir() + "/bootfy/dungeonfy")
 	if !DirAccess.dir_exists_absolute("user://dungeonfy"):
 		DirAccess.make_dir_absolute("user://dungeonfy")
-	if !DirAccess.dir_exists_absolute("user://dungeonfy/dfysp-main"): # Temporary
-		DirAccess.make_dir_absolute("user://dungeonfy/dfysp-main")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -38,19 +37,19 @@ func _process(_delta: float) -> void:
 	if $Button.disabled == true:
 		if downloading == "Server":
 			if $Server.get_body_size() != -1:
-				$Download.text = "Downloading Server... " + str(int($Server.get_downloaded_bytes()*100/$Server.get_body_size())) + "% " + str($Server.get_downloaded_bytes()/1000000) + "MB"
+				$Download.text = "Downloading Server... " + str(int($Server.get_downloaded_bytes()*100/$Server.get_body_size())) + "% " + str($Server.get_downloaded_bytes()/1000000) + "MB 1/3"
 			else:
-				$Download.text = "Downloading Server... " + str($Server.get_downloaded_bytes()/1000000) + "MB"
+				$Download.text = "Downloading Server... " + str($Server.get_downloaded_bytes()/1000000) + "MB 1/3"
 		elif downloading == "Java":
 			if $Java.get_body_size() != -1:
-				$Download.text = "Downloading Java... " + str(int($Java.get_downloaded_bytes()*100/$Java.get_body_size())) + "% " + str($Java.get_downloaded_bytes()/1000000) + "MB"
+				$Download.text = "Downloading Java... " + str(int($Java.get_downloaded_bytes()*100/$Java.get_body_size())) + "% " + str($Java.get_downloaded_bytes()/1000000) + "MB 2/3"
 			else:
-				$Download.text = "Downloading Java... " + str($Java.get_downloaded_bytes()/1000000) + "MB"
+				$Download.text = "Downloading Java... " + str($Java.get_downloaded_bytes()/1000000) + "MB 2/3"
 		elif downloading == "Paper":
 			if $Server.get_body_size() != -1:
-				$Download.text = "Downloading Paper... " + str(int($Paper.get_downloaded_bytes()*100/$Paper.get_body_size())) + "% " + str($Paper.get_downloaded_bytes()/1000000) + "MB"
+				$Download.text = "Downloading Paper... " + str(int($Paper.get_downloaded_bytes()*100/$Paper.get_body_size())) + "% " + str($Paper.get_downloaded_bytes()/1000000) + "MB 3/3"
 			else:
-				$Download.text = "Downloading Paper... " + str($Paper.get_downloaded_bytes()/1000000) + "MB"
+				$Download.text = "Downloading Paper... " + str($Paper.get_downloaded_bytes()/1000000) + "MB 3/3"
 
 
 func _on_button_pressed() -> void:
@@ -59,7 +58,7 @@ func _on_button_pressed() -> void:
 		$AnimationPlayer.play("slide")
 		downloading = "Server"
 		$Server.request(SERVER)
-	elif !java_check()[1]:
+	elif java_check()[1]:
 		$Button.disabled = true
 		$AnimationPlayer.play("slide")
 		downloading = "Java"
@@ -79,6 +78,8 @@ func _on_server_request_completed(_result: int, _response_code: int, _headers: P
 	else:
 		print("Server not saved.")
 	file.close()
+	print(OS.execute("unzip", [OS.get_data_dir() + "/bootfy/dungeonfy/server.zip", "-d", OS.get_data_dir() + "/bootfy/dungeonfy"]))
+	print(OS.get_data_dir() + "/bootfy/dungeonfy/server.zip")
 	if java_check()[1]:
 		downloading = "Java"
 		$Java.request(java_check()[0])
@@ -93,10 +94,12 @@ func _on_java_request_completed(_result: int, _response_code: int, _headers: Pac
 		var file = FileAccess.open("user://dungeonfy/java.zip", FileAccess.WRITE)
 		file.store_buffer(body)
 		file.close()
+		OS.execute("unzip", [OS.get_data_dir() + "/bootfy/dungeonfy/java.zip", "-d", OS.get_data_dir() + "/bootfy/dungeonfy"])
 	else:
 		var file = FileAccess.open("user://dungeonfy/java.tar.gz", FileAccess.WRITE)
 		file.store_buffer(body)
 		file.close()
+		OS.execute("tar", ["xf", OS.get_data_dir() + "/bootfy/dungeonfy/java.tar.gz", "--directory=" + OS.get_data_dir() + "/bootfy/dungeonfy"])
 	
 	if !FileAccess.file_exists("user://dungeonfy/dfysp-main/paper.jar"):
 		downloading = "Paper"
