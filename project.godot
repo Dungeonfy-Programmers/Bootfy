@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Bootfy"
 config/description="Server Launch Helper for Dungeonfy."
-config/version="1.0.1"
+config/version="1.0.2"
 run/main_scene="uid://xoyftw7gnvfw"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="bootfy"
