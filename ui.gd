@@ -63,7 +63,7 @@ func start_server() -> void:
 		"-S " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/spigot.yml " +
 		"-W " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main " +
 		"--config " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/server.properties " +
-		"-b " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/bukkit/yml " +
+		"-b " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/bukkit.yml " +
 		"-w ul_void " +
 		"--paper-dir " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/config " +
 		"> \"" + server_log_path + "\" 2>&1"
