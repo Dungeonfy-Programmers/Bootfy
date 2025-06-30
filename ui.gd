@@ -10,6 +10,7 @@ const PAPER = "https://fill-data.papermc.io/v1/objects/cabed3ae77cf55deba7c7d872
 var downloading = ""
 var server_up = false
 var server_pid: int
+var console = false
 
 var server_log_path = OS.get_data_dir() + "/bootfy/dungeonfy/server_log.output"
 
@@ -110,6 +111,8 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+
+	$Label2.text = "Console: " + str(console) + "\n(Windows Only,\nI'm so sorry.)"
 	# TODO: Heavily clean up this code. (Rewrite)
 	
 	if server_up:
