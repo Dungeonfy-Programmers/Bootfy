@@ -76,10 +76,10 @@ func start_server() -> void:
 
 	if OS.get_name() == "macOS" or OS.get_name() == "Linux":
 		shell = "/bin/sh"
-		shell_args = ["-c", "cd " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main &&", java_cmd]
+		shell_args = ["-c", java_cmd]
 	else:
 		shell = "cmd.exe"
-		shell_args = ["/c", "cd " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main &&", java_cmd]
+		shell_args = ["/c", java_cmd]
 
 	server_pid = OS.create_process(shell, shell_args)
 	if server_pid == -1:
