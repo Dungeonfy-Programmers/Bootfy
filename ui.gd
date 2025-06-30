@@ -232,6 +232,8 @@ func _on_console_button_pressed() -> void:
 	ConsoleWindowInstance.close_requested.connect(_close_console_window)
 	
 func _close_console_window() -> void:
+	if ConsoleWindowInstance == null:
+		return
 	ConsoleWindowInstance.visible = false
 	remove_child(ConsoleWindowInstance)
 	if FileAccess.file_exists(server_log_path):
