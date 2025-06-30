@@ -11,6 +11,10 @@ var downloading = ""
 var server_up = false
 var server_pid: int
 
+var server_log_path = OS.get_data_dir() + "/bootfy/dungeonfy/server_log.output"
+
+
+
 func java_check() -> Array:
 	if DirAccess.dir_exists_absolute("user://dungeonfy/jdk-21.0.2") || DirAccess.dir_exists_absolute("user://dungeonfy/jdk-21.0.2.jdk"):
 		return ["", false]
@@ -20,31 +24,75 @@ func java_check() -> Array:
 		return [JAVA_MACOS, true]
 	else:
 		return [JAVA_LINUX, true]
+		
+
 
 func start_server() -> void:
 	$AnimationPlayer.play("button_stop")
 	$Button.text = "Stop Server"
 	server_up = true
-	
-	DirAccess.open("user://dungeonfy/dfysp-main")
+
+	print("Log path:", server_log_path)
+
+	if FileAccess.file_exists(server_log_path):
+		var da  = DirAccess
+		da.remove_absolute(server_log_path)
+	var log_dir = OS.get_data_dir() + "/bootfy/dungeonfy"
+	if not DirAccess.dir_exists_absolute(log_dir):
+		var da = DirAccess.open(OS.get_data_dir())
+		var err = da.make_dir_recursive(log_dir)
+		if err != OK:
+			print("Failed to create log directory! Error code:", err)
+
 	var test = []
 	OS.execute("ls", [], test)
 	print(test)
-	# TODO: Actually fix this because it's awful and generates a bunch of files in places they shouldn't be 
-	# e.g permissions.yml will be in the directory the exe is in, but the world file will be in the proper folder
-	# I hate Godot actually it's all godot's fault
-	# TODO: Add toggle for server console
+
+	var java_path = ""
 	if OS.get_name() == "macOS":
-		server_pid = OS.create_process(OS.get_user_data_dir() + "/dungeonfy/jdk-21.0.2.jdk/Contents/Home/bin/java", ["-Duser.dir=" + OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "-jar", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/paper.jar", "-nogui", "-P", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins", "-S", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/spigot.yml", "-W", OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "--config", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/server.properties", "-b", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/bukkit/yml", "-w", "ul_void", "--paper-dir", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/config"])
+		java_path = OS.get_user_data_dir() + "/dungeonfy/jdk-21.0.2.jdk/Contents/Home/bin/java"
 	else:
-		server_pid = OS.create_process(OS.get_user_data_dir() + "/dungeonfy/jdk-21.0.2/bin/java", ["-Duser.dir=" + OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "-jar", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/paper.jar", "-nogui", "-P", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins", "-S", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/spigot.yml", "-W", OS.get_user_data_dir() + "/dungeonfy/dfysp-main", "--config", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/server.properties", "-b", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/bukkit/yml", "-w", "ul_void", "--paper-dir", OS.get_user_data_dir() + "/dungeonfy/dfysp-main/config"])
-	print(server_pid)
+		java_path = OS.get_user_data_dir() + "/dungeonfy/jdk-21.0.2/bin/java"
+
+	var java_cmd = (
+		"\"" + java_path + "\" " +
+		"-Duser.dir=" + OS.get_user_data_dir() + "/dungeonfy/dfysp-main " +
+		"-jar " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/paper.jar " +
+		"-nogui " +
+		"-P " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins " +
+		"-S " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/spigot.yml " +
+		"-W " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main " +
+		"--config " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/server.properties " +
+		"-b " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/bukkit/yml " +
+		"-w ul_void " +
+		"--paper-dir " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/config " +
+		"> \"" + server_log_path + "\" 2>&1"
+	)
+
+	#print("Full command:", java_cmd)
+
+	var shell = ""
+	var shell_args = []
+
+	if OS.get_name() == "macOS" or OS.get_name() == "Linux":
+		shell = "/bin/sh"
+		shell_args = ["-c", java_cmd]
+	else:
+		shell = "cmd.exe"
+		shell_args = ["/c", java_cmd]
+
+	server_pid = OS.create_process(shell, shell_args)
+	if server_pid == -1:
+		print("Failed to start server process!")
+	else:
+		print("Server started with PID:", server_pid)
 
 func stop_server() -> void:
 	$AnimationPlayer.play("button_go")
 	$Button.text = "Start Server"
 	server_up = false
 	OS.kill(server_pid)
+	_close_console_window()
 
 func manage_server() -> void:
 	if server_up:
@@ -54,6 +102,7 @@ func manage_server() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	get_viewport().set_embedding_subwindows(false)
 	print("Server Directory: " + OS.get_data_dir() + "/bootfy/dungeonfy")
 	if !DirAccess.dir_exists_absolute("user://dungeonfy"):
 		DirAccess.make_dir_absolute("user://dungeonfy")
@@ -62,6 +111,11 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	# TODO: Heavily clean up this code. (Rewrite)
+	
+	if server_up:
+		$Console_Button.visible = true
+	else:
+		$Console_Button.visible = false
 
 	if $Button.disabled == true:
 		if downloading == "Server":
@@ -162,3 +216,24 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		$AnimationPlayer2.play("RESET")
 		$AnimationPlayer3.play("RESET")
 		manage_server()
+		
+#----- Console Button Function ------#
+
+var ConsoleWindow = preload("res://Console.tscn")
+var ConsoleWindowInstance
+
+func _on_console_button_pressed() -> void:
+	ConsoleWindowInstance = ConsoleWindow.instantiate()
+	ConsoleWindowInstance.Server_PID = server_pid
+	ConsoleWindowInstance.Server_Log = server_log_path
+	add_child(ConsoleWindowInstance)
+	ConsoleWindowInstance.show()
+	ConsoleWindowInstance.close_requested.connect(_close_console_window)
+	
+func _close_console_window() -> void:
+	ConsoleWindowInstance.visible = false
+	remove_child(ConsoleWindowInstance)
+	if FileAccess.file_exists(server_log_path):
+		var da  = DirAccess
+		da.remove_absolute(server_log_path)
+	
