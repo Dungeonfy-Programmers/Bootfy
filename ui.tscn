@@ -419,6 +419,7 @@ theme_override_font_sizes/font_size = 160
 text = "Downloading..."
 
 [node name="Label2" type="Label" parent="."]
+layout_mode = 0
 offset_left = 997.0
 offset_top = 51.0
 offset_right = 1296.0
