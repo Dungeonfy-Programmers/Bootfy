@@ -13,7 +13,7 @@ func _ready() -> void:
 	var contents = read_all_log()
 	$UI/TextEdit.text += contents
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var new_lines = read_new_log_lines()
 	if new_lines != "":
 		$UI/TextEdit.text += new_lines
@@ -56,3 +56,4 @@ func _on_line_edit_submit(new_text: String ) -> void:
 		print("Command: ", new_text)
 	else:
 		print("Failed to open command file!")
+	$UI/LineEdit.text = ""
