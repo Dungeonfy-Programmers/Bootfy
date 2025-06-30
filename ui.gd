@@ -76,10 +76,10 @@ func start_server() -> void:
 
 	if OS.get_name() == "macOS" or OS.get_name() == "Linux":
 		shell = "/bin/sh"
-		shell_args = ["-c", java_cmd]
+		shell_args = ["-c", "cd " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main &&", java_cmd]
 	else:
 		shell = "cmd.exe"
-		shell_args = ["/c", java_cmd]
+		shell_args = ["/c", "cd " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main &&", java_cmd]
 
 	server_pid = OS.create_process(shell, shell_args)
 	if server_pid == -1:
@@ -167,7 +167,7 @@ func _on_server_request_completed(_result: int, _response_code: int, _headers: P
 	if OS.get_name() == "Windows":
 		OS.execute("tar", ["-xf", OS.get_user_data_dir() + "/dungeonfy/server.zip", "-C", OS.get_user_data_dir() + "/dungeonfy"])
 	else:
-		OS.execute("unzip", [OS.get_data_dir() + "/bootfy/dungeonfy/server.zip", "-d", OS.get_data_dir() + "/bootfy/dungeonfy"])
+		OS.execute("unzip", [OS.get_user_data_dir() + "/bootfy/dungeonfy/server.zip", "-d", OS.get_data_dir() + "/bootfy/dungeonfy"])
 	if java_check()[1]:
 		downloading = "Java"
 		$Java.request(java_check()[0])
