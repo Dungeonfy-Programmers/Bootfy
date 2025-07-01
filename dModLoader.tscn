@@ -39,6 +39,7 @@ layout_mode = 2
 theme = SubResource("Theme_2hgso")
 theme_override_colors/font_color = Color(0.433337, 1, 0.229506, 1)
 text = "----------- Install Mods -----------"
+horizontal_alignment = 1
 
 [node name="ItemList" type="ItemList" parent="ui"]
 layout_mode = 2
@@ -53,6 +54,7 @@ layout_mode = 2
 theme = SubResource("Theme_kd4cs")
 theme_override_colors/font_color = Color(0.433337, 1, 0.229506, 1)
 text = "----------- Installed List -----------"
+horizontal_alignment = 1
 
 [node name="InstalledList" type="ItemList" parent="ui"]
 layout_mode = 2
