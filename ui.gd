@@ -13,7 +13,7 @@ var server_pid: int
 
 var server_log_path = OS.get_data_dir() + "/bootfy/dungeonfy/server_log.output"
 
-var CommandExecutorFile = OS.get_user_data_dir() + "/bootfy/dungeonfy/dfysp-main/plugins/CommandExecutor/commands.txt"
+var CommandExecutorFile = OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins/CommandExecutor/commands.txt"
 
 
 func java_check() -> Array:
