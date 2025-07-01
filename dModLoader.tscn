@@ -16,6 +16,7 @@ default_font = ExtResource("1_v1kc6")
 default_font = ExtResource("1_v1kc6")
 
 [node name="Window" type="Window"]
+title = "dModLoader"
 position = Vector2i(0, 36)
 size = Vector2i(1000, 500)
 script = ExtResource("1_lhvod")

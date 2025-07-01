@@ -93,6 +93,7 @@ func stop_server() -> void:
 	server_up = false
 	OS.kill(server_pid)
 	_close_console_window()
+	_close_dmod_window()
 
 func manage_server() -> void:
 	if server_up:
@@ -177,7 +178,7 @@ func _on_server_request_completed(_result: int, _response_code: int, _headers: P
 		var cmd = "unzip '%s' -d '%s'" % [zip_path, extract_path]
 		print("Running:", cmd)
 
-		var exit_code = OS.execute("/bin/sh", ["-c", cmd])
+		OS.execute("/bin/sh", ["-c", cmd])
 	if java_check()[1]:
 		downloading = "Java"
 		$Java.request(java_check()[0])
