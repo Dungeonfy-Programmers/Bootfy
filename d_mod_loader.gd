@@ -81,7 +81,7 @@ func get_all_files_in_dir(path: String) -> Array:
 		if file_name == "":
 			break
 		if dir.current_is_dir():
-			continue  # skip directories
+			continue 
 		files.append(file_name)
 	dir.list_dir_end()
 	return files
