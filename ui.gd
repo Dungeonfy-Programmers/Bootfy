@@ -86,6 +86,8 @@ func start_server() -> void:
 	if server_pid == -1:
 		print("Failed to start server process!")
 	else:
+		if OS.get_name() != "Windows":
+			server_pid += 1
 		print("Server started with PID:", server_pid)
 
 func stop_server() -> void:
