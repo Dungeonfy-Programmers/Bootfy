@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3 uid="uid://oti78dguqr0u"]
+
+[ext_resource type="Script" uid="uid://b8n2q2bgjpuwd" path="res://d_mod_loader.gd" id="1_lhvod"]
+[ext_resource type="FontFile" uid="uid://h60fpjwv0jro" path="res://Monocraft-nerd-fonts-patched.ttc" id="1_v1kc6"]
+
+[sub_resource type="Theme" id="Theme_lhvod"]
+default_font = ExtResource("1_v1kc6")
+
+[sub_resource type="Theme" id="Theme_2hgso"]
+default_font = ExtResource("1_v1kc6")
+
+[sub_resource type="Theme" id="Theme_2ifs5"]
+default_font = ExtResource("1_v1kc6")
+
+[sub_resource type="Theme" id="Theme_kd4cs"]
+default_font = ExtResource("1_v1kc6")
+
+[node name="Window" type="Window"]
+position = Vector2i(0, 36)
+size = Vector2i(1000, 500)
+script = ExtResource("1_lhvod")
+
+[node name="ui" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SearchBar" type="LineEdit" parent="ui"]
+layout_mode = 2
+theme = SubResource("Theme_lhvod")
+placeholder_text = "Search For Mods:"
+
+[node name="Label" type="Label" parent="ui"]
+layout_mode = 2
+theme = SubResource("Theme_2hgso")
+theme_override_colors/font_color = Color(0.433337, 1, 0.229506, 1)
+text = "----------- Install Mods -----------"
+
+[node name="ItemList" type="ItemList" parent="ui"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = SubResource("Theme_2ifs5")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+item_count = 1
+item_0/text = "Loading Please Wait...."
+
+[node name="InstalledListLabel" type="Label" parent="ui"]
+layout_mode = 2
+theme = SubResource("Theme_kd4cs")
+theme_override_colors/font_color = Color(0.433337, 1, 0.229506, 1)
+text = "----------- Installed List -----------"
+
+[node name="InstalledList" type="ItemList" parent="ui"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = SubResource("Theme_2ifs5")
+theme_override_colors/font_color = Color(0.224572, 0.606268, 1.92523e-07, 1)
+item_count = 1
+item_0/text = "Loading Please Wait...."
+
+[node name="SkriptRepo" type="HTTPRequest" parent="."]
+
+[node name="SkriptDownloader" type="HTTPRequest" parent="."]
+
+[connection signal="text_changed" from="ui/SearchBar" to="." method="_search_filter_submit"]
+[connection signal="item_selected" from="ui/ItemList" to="." method="_on_item_list_item_selected"]
+[connection signal="item_selected" from="ui/InstalledList" to="." method="_on_installed_list_selected"]
+[connection signal="request_completed" from="SkriptDownloader" to="." method="_on_skript_downloader_request_completed"]
