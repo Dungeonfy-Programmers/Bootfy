@@ -239,4 +239,9 @@ func _close_console_window() -> void:
 	if FileAccess.file_exists(server_log_path):
 		var da  = DirAccess
 		da.remove_absolute(server_log_path)
-	
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		if server_pid:
+			OS.kill(server_pid)
+		get_tree().quit()
