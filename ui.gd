@@ -272,7 +272,7 @@ func _close_dmod_window() -> void:
 
 
 	
-
+# Handle closing
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		if server_pid:
