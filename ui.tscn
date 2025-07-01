@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://xoyftw7gnvfw"]
+[gd_scene load_steps=28 format=3 uid="uid://xoyftw7gnvfw"]
 
 [ext_resource type="Script" uid="uid://cxr3cwbamg76g" path="res://ui.gd" id="1_27fn8"]
 [ext_resource type="FontFile" uid="uid://h60fpjwv0jro" path="res://Monocraft-nerd-fonts-patched.ttc" id="1_fyqef"]
@@ -35,6 +35,15 @@ bg_color = Color(0.415032, 0.0194246, 0.503802, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ok7cu"]
 bg_color = Color(0.620266, 0.0637563, 0.746756, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_irxef"]
+bg_color = Color(0.0248775, 0.152929, 0.198985, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e2l4f"]
+bg_color = Color(0.0963755, 0.298107, 0.331551, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n5rqp"]
+bg_color = Color(0.120017, 0.451991, 0.539445, 1)
 
 [sub_resource type="Animation" id="Animation_nltto"]
 length = 0.001
@@ -371,8 +380,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 100.0
 offset_top = 118.0
-offset_right = -100.0
-offset_bottom = -118.0
+offset_right = -101.0
+offset_bottom = -339.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("1_fyqef")
@@ -394,8 +403,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -209.0
-offset_top = -99.0
+offset_left = -310.0
+offset_top = -317.0
+offset_right = -101.0
+offset_bottom = -218.0
 grow_horizontal = 0
 grow_vertical = 0
 tooltip_text = "Opens a console window"
@@ -410,6 +421,32 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_y4yjw")
 theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_ok7cu")
 theme_override_styles/normal = SubResource("StyleBoxFlat_ok7cu")
 text = "Open Console"
+
+[node name="D_mod_loader" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1052.0
+offset_top = -317.0
+offset_right = -843.0
+offset_bottom = -218.0
+grow_horizontal = 0
+grow_vertical = 0
+tooltip_text = "Opens a console window"
+focus_mode = 0
+theme_override_fonts/font = ExtResource("1_fyqef")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxFlat_irxef")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_irxef")
+theme_override_styles/hover = SubResource("StyleBoxFlat_e2l4f")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxFlat_irxef")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_irxef")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_n5rqp")
+theme_override_styles/normal = SubResource("StyleBoxFlat_n5rqp")
+text = "dModLoader"
 
 [node name="Dungeonfy" type="Sprite2D" parent="."]
 position = Vector2(576, 59)
@@ -464,6 +501,7 @@ libraries = {
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Console_Button" to="." method="_on_console_button_pressed"]
+[connection signal="pressed" from="D_mod_loader" to="." method="_on_D_mod_pressed"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="request_completed" from="Server" to="." method="_on_server_request_completed"]
 [connection signal="request_completed" from="Java" to="." method="_on_java_request_completed"]

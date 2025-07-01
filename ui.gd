@@ -106,6 +106,7 @@ func _ready() -> void:
 	print("Server Directory: " + OS.get_data_dir() + "/bootfy/dungeonfy")
 	if !DirAccess.dir_exists_absolute("user://dungeonfy"):
 		DirAccess.make_dir_absolute("user://dungeonfy")
+	print("User Data Dir: " +OS.get_user_data_dir())
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -117,6 +118,10 @@ func _process(_delta: float) -> void:
 		$Console_Button.visible = true
 	else:
 		$Console_Button.visible = false
+	if server_up and DirAccess.dir_exists_absolute(OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins/Skript/scripts"):
+		$D_mod_loader.visible = true
+	else:
+		$D_mod_loader.visible = false
 
 	if $Button.disabled == true:
 		if downloading == "Server":
@@ -167,7 +172,12 @@ func _on_server_request_completed(_result: int, _response_code: int, _headers: P
 	if OS.get_name() == "Windows":
 		OS.execute("tar", ["-xf", OS.get_user_data_dir() + "/dungeonfy/server.zip", "-C", OS.get_user_data_dir() + "/dungeonfy"])
 	else:
-		OS.execute("unzip", [OS.get_user_data_dir() + "/bootfy/dungeonfy/server.zip", "-d", OS.get_data_dir() + "/bootfy/dungeonfy"])
+		var zip_path = OS.get_user_data_dir() + "/dungeonfy/server.zip"
+		var extract_path = OS.get_user_data_dir() + "/dungeonfy/"
+		var cmd = "unzip '%s' -d '%s'" % [zip_path, extract_path]
+		print("Running:", cmd)
+
+		var exit_code = OS.execute("/bin/sh", ["-c", cmd])
 	if java_check()[1]:
 		downloading = "Java"
 		$Java.request(java_check()[0])
@@ -239,4 +249,25 @@ func _close_console_window() -> void:
 	if FileAccess.file_exists(server_log_path):
 		var da  = DirAccess
 		da.remove_absolute(server_log_path)
+		
+#----- dModLoader function ---------#
+
+var dModWindow = preload("res://dModLoader.tscn")
+var dModWindowInstance = null
+
+func _on_D_mod_pressed() -> void:
+	if dModWindowInstance == null:
+		dModWindowInstance = dModWindow.instantiate()
+	
+	add_child(dModWindowInstance)
+	dModWindowInstance.show()
+	dModWindowInstance.close_requested.connect(_close_dmod_window)
+	
+func _close_dmod_window() -> void:
+	if dModWindowInstance == null:
+		return
+	dModWindowInstance.visible = false
+	remove_child(dModWindowInstance)
+
+
 	
