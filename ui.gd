@@ -271,3 +271,9 @@ func _close_dmod_window() -> void:
 
 
 	
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		if server_pid:
+			OS.kill(server_pid)
+		get_tree().quit()
