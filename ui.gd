@@ -13,6 +13,7 @@ var server_pid: int
 
 var server_log_path = OS.get_data_dir() + "/bootfy/dungeonfy/server_log.output"
 
+var CommandExecutorFile = OS.get_user_data_dir() + "/bootfy/dungeonfy/dfysp-main/plugins/CommandExecutor/commands.txt"
 
 
 func java_check() -> Array:
@@ -91,6 +92,12 @@ func stop_server() -> void:
 	$AnimationPlayer.play("button_go")
 	$Button.text = "Start Server"
 	server_up = false
+	var file = FileAccess.open(CommandExecutorFile, FileAccess.WRITE)
+	if file:
+		file.store_string("stop\n")
+		file.close()
+	else:
+		print("Failed to open command file!")
 	OS.kill(server_pid)
 	_close_console_window()
 	_close_dmod_window()
@@ -235,12 +242,13 @@ var ConsoleWindow = preload("res://Console.tscn")
 var ConsoleWindowInstance
 
 func _on_console_button_pressed() -> void:
-	ConsoleWindowInstance = ConsoleWindow.instantiate()
+	if ConsoleWindowInstance == null:
+		ConsoleWindowInstance = ConsoleWindow.instantiate()
+	
 	ConsoleWindowInstance.Server_PID = server_pid
 	ConsoleWindowInstance.Server_Log = server_log_path
 	add_child(ConsoleWindowInstance)
 	ConsoleWindowInstance.show()
-	ConsoleWindowInstance.close_requested.connect(_close_console_window)
 	
 func _close_console_window() -> void:
 	if ConsoleWindowInstance == null:
@@ -276,5 +284,11 @@ func _close_dmod_window() -> void:
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		if server_pid:
+			var file = FileAccess.open(CommandExecutorFile, FileAccess.WRITE)
+			if file:
+				file.store_string("stop\n")
+				file.close()
+			else:
+				print("Failed to open command file!")
 			OS.kill(server_pid)
 		get_tree().quit()
