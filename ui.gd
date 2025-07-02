@@ -258,9 +258,7 @@ func _close_console_window() -> void:
 		return
 	ConsoleWindowInstance.visible = false
 	remove_child(ConsoleWindowInstance)
-	if FileAccess.file_exists(server_log_path):
-		var da  = DirAccess
-		da.remove_absolute(server_log_path)
+	ConsoleWindowInstance = null
 		
 #----- dModLoader function ---------#
 
