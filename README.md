@@ -8,3 +8,10 @@ This is an app that makes it easy to start a local server. Not just that, it pic
 
 ## Why?
 Dungeonfy as we know it is gone. The server it was on is no longer up, but we have the server files. So, this program allows you to play the server by yourself. It means that people who want to play the server don't have to navigate the scary command line (Windows users are so lazy /j) and can just play the game.
+
+## Installation Guide
+Download the file for your operating system and run it. If you get a pop up that says "Windows has protected your PC", click "More Info" and then "Run Anyway". I promise it's not a virus.
+
+Once you've run the application, hit the big green button. Then wait for it to finish downloading.
+
+Once it turns red and says "Stop Server", go into Minecraft and add a new server to your server list. You're going to set the IP to `localhost`. Nothing else, no .com or anything, just `localhost`. Then you can hit play. If it doesn't let you join instantly, wait a second.
