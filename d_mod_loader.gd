@@ -89,7 +89,7 @@ func get_all_files_in_dir(path: String) -> Array:
 
 
 #--------- Getting Files -------------------#
-func _on_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+func _on_request_completed(result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result != OK or response_code != 200:
 		print("Request failed, code:", response_code)
 		return
@@ -116,7 +116,7 @@ func _download_file(url, path):
 	}
 	$SkriptDownloader.request(url)
 	
-func _on_skript_downloader_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+func _on_skript_downloader_request_completed(result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result != OK or response_code != 200:
 		print("Download failed, code:", response_code)
 		current_download = {}
