@@ -251,6 +251,7 @@ func _on_console_button_pressed() -> void:
 	ConsoleWindowInstance.Server_Log = server_log_path
 	add_child(ConsoleWindowInstance)
 	ConsoleWindowInstance.show()
+	ConsoleWindowInstance.close_requested.connect(_close_console_window)
 	
 func _close_console_window() -> void:
 	if ConsoleWindowInstance == null:
