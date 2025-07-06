@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://oti78dguqr0u"]
+[gd_scene load_steps=12 format=3 uid="uid://oti78dguqr0u"]
 
 [ext_resource type="Script" uid="uid://b8n2q2bgjpuwd" path="res://d_mod_loader.gd" id="1_lhvod"]
 [ext_resource type="FontFile" uid="uid://h60fpjwv0jro" path="res://Monocraft-nerd-fonts-patched.ttc" id="1_v1kc6"]
@@ -11,6 +11,16 @@ default_font = ExtResource("1_v1kc6")
 
 [sub_resource type="Theme" id="Theme_2ifs5"]
 default_font = ExtResource("1_v1kc6")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2ifs5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kd4cs"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s8jed"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lhvod"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2hgso"]
 
 [sub_resource type="Theme" id="Theme_kd4cs"]
 default_font = ExtResource("1_v1kc6")
@@ -47,6 +57,11 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = SubResource("Theme_2ifs5")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_2ifs5")
+theme_override_styles/hovered_selected = SubResource("StyleBoxEmpty_kd4cs")
+theme_override_styles/hovered_selected_focus = SubResource("StyleBoxEmpty_s8jed")
+theme_override_styles/selected = SubResource("StyleBoxEmpty_lhvod")
+theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_2hgso")
 item_count = 1
 item_0/text = "Loading Please Wait...."
 
@@ -69,7 +84,14 @@ item_0/text = "Loading Please Wait...."
 
 [node name="SkriptDownloader" type="HTTPRequest" parent="."]
 
+[node name="MapDownloader" type="HTTPRequest" parent="."]
+
+[node name="SkriptMapDownloader" type="HTTPRequest" parent="."]
+
 [connection signal="text_changed" from="ui/SearchBar" to="." method="_search_filter_submit"]
 [connection signal="item_selected" from="ui/ItemList" to="." method="_on_item_list_item_selected"]
 [connection signal="item_selected" from="ui/InstalledList" to="." method="_on_installed_list_selected"]
+[connection signal="request_completed" from="SkriptRepo" to="." method="_on_request_completed"]
 [connection signal="request_completed" from="SkriptDownloader" to="." method="_on_skript_downloader_request_completed"]
+[connection signal="request_completed" from="MapDownloader" to="." method="_on_map_downloader_request_completed"]
+[connection signal="request_completed" from="SkriptMapDownloader" to="." method="_on_skript_map_downloader_request_completed"]

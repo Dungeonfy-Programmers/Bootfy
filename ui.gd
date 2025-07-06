@@ -11,6 +11,8 @@ var downloading = ""
 var server_up = false
 var server_pid: int
 
+var world_directory = OS.get_user_data_dir().path_join("dungeonfy/dfysp-main")
+
 var server_log_path = OS.get_data_dir() + "/bootfy/dungeonfy/server_log.output"
 
 var CommandExecutorFile = OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins/CommandExecutor/commands.txt"
@@ -33,6 +35,8 @@ func start_server() -> void:
 	$Button.text = "Stop Server"
 	server_up = true
 
+	_close_dmod_window()
+
 	print("Log path:", server_log_path)
 
 	if FileAccess.file_exists(server_log_path):
@@ -54,7 +58,10 @@ func start_server() -> void:
 		java_path = OS.get_user_data_dir() + "/dungeonfy/jdk-21.0.2.jdk/Contents/Home/bin/java"
 	else:
 		java_path = OS.get_user_data_dir() + "/dungeonfy/jdk-21.0.2/bin/java"
-
+	if DirAccess.dir_exists_absolute("user://dungeonfy/dfysp-main/mappacks/ul_void"):
+		world_directory = OS.get_user_data_dir().path_join("dungeonfy/dfysp-main/mappacks")
+	else:
+		world_directory = OS.get_user_data_dir().path_join("dungeonfy/dfysp-main")
 	var java_cmd = (
 		"\"" + java_path + "\" " +
 		"-Duser.dir=" + OS.get_user_data_dir() + "/dungeonfy/dfysp-main " +
@@ -62,15 +69,15 @@ func start_server() -> void:
 		"-nogui " +
 		"-P " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins " +
 		"-S " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/spigot.yml " +
-		"-W " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main " +
-		"--config " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/server.properties " +
+		"-W " + world_directory +
+		" --config " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/server.properties " +
 		"-b " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/bukkit.yml " +
 		"-w ul_void " +
 		"--paper-dir " + OS.get_user_data_dir() + "/dungeonfy/dfysp-main/config " +
 		"> \"" + server_log_path + "\" 2>&1"
 	)
 
-	#print("Full command:", java_cmd)
+	print("Full command:", java_cmd)
 
 	var shell = ""
 	var shell_args = []
@@ -129,9 +136,9 @@ func _process(_delta: float) -> void:
 	else:
 		$Console_Button.visible = false
 	if server_up and DirAccess.dir_exists_absolute(OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins/Skript/scripts"):
-		$D_mod_loader.visible = true
-	else:
 		$D_mod_loader.visible = false
+	else:
+		$D_mod_loader.visible = true
 
 	if $Button.disabled == true:
 		if downloading == "Server":
@@ -293,3 +300,12 @@ func _notification(what):
 				print("Failed to open command file!")
 			OS.kill(server_pid)
 		get_tree().quit()
+
+
+# steal a function from a random Godot plugin 
+func rmdir(directory: String) -> void:
+	for file in DirAccess.get_files_at(directory):
+		DirAccess.remove_absolute(directory.path_join(file))
+	for dir in DirAccess.get_directories_at(directory):
+		rmdir(directory.path_join(dir))
+	DirAccess.remove_absolute(directory)
