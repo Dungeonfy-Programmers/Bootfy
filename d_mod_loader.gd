@@ -73,7 +73,7 @@ func _on_item_list_item_selected(index: int) -> void:
 	if $ui/ItemList.get_item_text(index).split(':')[0].split('(').has("Map Pack)"): # weird regex-ish stuff. Don't mess with too much please
 		for i in DirAccess.get_files_at(map_download_path):
 			if i.ends_with(".zip"):
-				_populate_item_list # screen refresh so the user sees an animation
+				_populate_item_list() # screen refresh so the user sees an animation
 				return # don't bother with changing the map if you already have one installed
 		if FileAccess.file_exists(skripts_download_path + $ui/ItemList.get_item_text(index).split('(')[0].strip_edges() + ".sk"):
 			DirAccess.remove_absolute(skripts_download_path + $ui/ItemList.get_item_text(index).split('(')[0].strip_edges() + ".sk")
@@ -90,7 +90,8 @@ func _on_item_list_item_selected(index: int) -> void:
 	_download_file(url, skripts_download_path + key +".sk")
 	
 func _on_installed_list_selected(index: int) -> void:
-	if $ui/ItemList.get_item_text(index).split(':')[0].split('(').has("Map Pack)"):
+	if $ui/InstalledList.get_item_text(index).split(':')[0].split('(').has("Map Pack)"):
+		print($ui/InstalledList.get_item_text(index).split(':')[0].split('('))
 		var map = $ui/InstalledList.get_item_text(index).split('(')[0].strip_edges()
 		var map_path = map_download_path + map
 		if DirAccess.dir_exists_absolute(OS.get_user_data_dir().path_join("dungeonfy/dfysp-main/ul_void/playerdata")):
