@@ -95,10 +95,8 @@ func _on_installed_list_selected(index: int) -> void:
 		var map = $ui/InstalledList.get_item_text(index).split('(')[0].strip_edges()
 		var map_path = map_download_path + map
 		if DirAccess.dir_exists_absolute(OS.get_user_data_dir().path_join("dungeonfy/dfysp-main/ul_void/playerdata")):
-			print("zoinks!!!! jinkies!!!")
 			rmdir(OS.get_user_data_dir().path_join("dungeonfy/dfysp-main/ul_void/playerdata"))
 		DirAccess.rename_absolute(map_download_path.path_join("ul_void/playerdata"), OS.get_user_data_dir().path_join("dungeonfy/dfysp-main/ul_void/playerdata"))
-		print("aaaa")
 		rmdir(map_download_path.path_join("ul_void"))
 		DirAccess.remove_absolute(map_path + " (Map Pack).zip")
 		if FileAccess.file_exists(skripts_download_path + map + ".sk"):
