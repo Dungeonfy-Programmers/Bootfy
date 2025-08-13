@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://xoyftw7gnvfw"]
+[gd_scene load_steps=30 format=3 uid="uid://xoyftw7gnvfw"]
 
 [ext_resource type="Script" uid="uid://cxr3cwbamg76g" path="res://ui.gd" id="1_27fn8"]
 [ext_resource type="FontFile" uid="uid://h60fpjwv0jro" path="res://Monocraft-nerd-fonts-patched.ttc" id="1_fyqef"]
@@ -355,6 +355,11 @@ _data = {
 &"slide_back": SubResource("Animation_n5ude")
 }
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_27fn8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gs482"]
+bg_color = Color(1, 0.25, 0.25, 1)
+
 [node name="UI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -459,6 +464,35 @@ theme_override_fonts/font = ExtResource("1_fyqef")
 theme_override_font_sizes/font_size = 160
 text = "Downloading..."
 
+[node name="7z-Download" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -182.0
+offset_top = -18.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_fyqef")
+text = "Downloading 7z..."
+
+[node name="Wait" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -182.0
+offset_bottom = 18.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("1_fyqef")
+text = "App may freeze. 
+This is intended, 
+wait a second!"
+
 [node name="Download" type="Label" parent="."]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 0
@@ -487,16 +521,31 @@ libraries = {
 &"": SubResource("AnimationLibrary_ibotj")
 }
 
+[node name="7z" type="HTTPRequest" parent="."]
+
 [node name="Server" type="HTTPRequest" parent="."]
 
 [node name="Java" type="HTTPRequest" parent="."]
 
 [node name="Paper" type="HTTPRequest" parent="."]
 
+[node name="Debug" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_right = 175.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_fyqef")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_27fn8")
+theme_override_styles/normal = SubResource("StyleBoxFlat_gs482")
+text = "Debug Options"
+
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Console_Button" to="." method="_on_console_button_pressed"]
 [connection signal="pressed" from="D_mod_loader" to="." method="_on_D_mod_pressed"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="request_completed" from="7z" to="." method="_on_z_request_completed"]
 [connection signal="request_completed" from="Server" to="." method="_on_server_request_completed"]
 [connection signal="request_completed" from="Java" to="." method="_on_java_request_completed"]
 [connection signal="request_completed" from="Paper" to="." method="_on_paper_request_completed"]
+[connection signal="pressed" from="Debug" to="." method="_on_debug_pressed"]

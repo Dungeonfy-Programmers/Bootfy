@@ -119,11 +119,23 @@ func manage_server() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	get_viewport().set_embedding_subwindows(false)
 	print("Server Directory: " + OS.get_data_dir() + "/bootfy/dungeonfy")
 	if !DirAccess.dir_exists_absolute("user://dungeonfy"):
 		DirAccess.make_dir_absolute("user://dungeonfy")
 	print("User Data Dir: " +OS.get_user_data_dir())
+	if OS.get_name() == "Windows":
+		if !FileAccess.file_exists("user://dungeonfy/7za-windows-x86.exe"):
+			$"7z".request("https://github.com/Dungeonfy-Programmers/Bootfy-Skripts-Repository/raw/refs/heads/main/7za-windows-x86.exe")
+			$Button.disabled = true
+			$"7z-Download".show()
+	else:
+		if !FileAccess.file_exists("user://dungeonfy/7zz-linux-x64"):
+			$"7z".request("https://dungeonfy-programmers.github.io/Bootfy-Skripts-Repository/7zz-linux-x64")
+			$Button.disabled = true
+			$"7z-Download".show()
+	if !DirAccess.dir_exists_absolute("user://dungeonfy/dfysp-main"):
+		$D_mod_loader.hide()
+	get_viewport().set_embedding_subwindows(false)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -138,7 +150,8 @@ func _process(_delta: float) -> void:
 	if server_up and DirAccess.dir_exists_absolute(OS.get_user_data_dir() + "/dungeonfy/dfysp-main/plugins/Skript/scripts"):
 		$D_mod_loader.visible = false
 	else:
-		$D_mod_loader.visible = true
+		if DirAccess.dir_exists_absolute("user://dungeonfy/dfysp-main"):
+			$D_mod_loader.visible = true
 
 	if $Button.disabled == true:
 		if downloading == "Server":
@@ -161,16 +174,19 @@ func _process(_delta: float) -> void:
 func _on_button_pressed() -> void:
 	if !DirAccess.dir_exists_absolute("user://dungeonfy/dfysp-main"):
 		$Button.disabled = true 
+		$Wait.show()
 		$AnimationPlayer.play("slide")
 		downloading = "Server"
 		$Server.request(SERVER)
 	elif java_check()[1]:
 		$Button.disabled = true
+		$Wait.show()
 		$AnimationPlayer.play("slide")
 		downloading = "Java"
 		$Java.request(java_check()[0])
 	elif !FileAccess.file_exists("user://dungeonfy/dfysp-main/paper.jar"):
 		$Button.disabled = true
+		$Wait.show()
 		$AnimationPlayer.play("slide")
 		downloading = "Paper"
 		$Paper.request(PAPER)
@@ -186,20 +202,22 @@ func _on_server_request_completed(_result: int, _response_code: int, _headers: P
 	else:
 		print("Server not saved.")
 	file.close()
-	if OS.get_name() == "Windows":
-		OS.execute("tar", ["-xf", OS.get_user_data_dir() + "/dungeonfy/server.zip", "-C", OS.get_user_data_dir() + "/dungeonfy"])
-	else:
-		var zip_path = OS.get_user_data_dir() + "/dungeonfy/server.zip"
-		var extract_path = OS.get_user_data_dir() + "/dungeonfy/"
-		var cmd = "unzip '%s' -d '%s'" % [zip_path, extract_path]
-		print("Running:", cmd)
+	#if OS.get_name() == "Windows":
+	#	OS.create_process("powershell.exe", ["-Command", "Expand-Archive '", OS.get_user_data_dir() + "/dungeonfy/server.zip", "' -DestinationPath ", OS.get_user_data_dir() + "/dungeonfy"])
+	#else:
+	#	var zip_path = OS.get_user_data_dir() + "/dungeonfy/server.zip"
+	#	var extract_path = OS.get_user_data_dir() + "/dungeonfy/"
+	#	var cmd = "unzip '%s' -d '%s'" % [zip_path, extract_path]
+	#	print("Running:", cmd)
 
-		OS.execute("/bin/sh", ["-c", cmd])
+	#	OS.execute("/bin/sh", ["-c", cmd])
+	unzip(OS.get_user_data_dir().path_join("dungeonfy/server.zip"), OS.get_user_data_dir().path_join("dungeonfy"))
 	if java_check()[1]:
 		downloading = "Java"
 		$Java.request(java_check()[0])
 	else:
 		$Button.disabled = false
+		$Wait.hide()
 		$AnimationPlayer.play("slide_back")
 		manage_server()
 
@@ -209,18 +227,20 @@ func _on_java_request_completed(_result: int, _response_code: int, _headers: Pac
 		var file = FileAccess.open("user://dungeonfy/java.zip", FileAccess.WRITE)
 		file.store_buffer(body)
 		file.close()
-		OS.execute("tar", ["-xf", OS.get_data_dir() + "/bootfy/dungeonfy/java.zip", "-C", OS.get_data_dir() + "/bootfy/dungeonfy"])
+		unzip(OS.get_user_data_dir().path_join("dungeonfy/java.zip"), OS.get_user_data_dir().path_join("dungeonfy"))
+	#	OS.create_process("powershell.exe", ["-Commmand", "Expand-Archive '", OS.get_data_dir() + "/bootfy/dungeonfy/java.zip", "' -DestinationPath", OS.get_data_dir() + "/bootfy/dungeonfy"])
 	else:
 		var file = FileAccess.open("user://dungeonfy/java.tar.gz", FileAccess.WRITE)
 		file.store_buffer(body)
 		file.close()
-		OS.execute("tar", ["xf", OS.get_data_dir() + "/bootfy/dungeonfy/java.tar.gz", "--directory=" + OS.get_data_dir() + "/bootfy/dungeonfy"])
-	
+		untar(OS.get_user_data_dir().path_join("dungeonfy/java.tar.gz"), OS.get_user_data_dir().path_join("dungeonfy"))
+	#	OS.execute("tar", ["xf", OS.get_data_dir() + "/bootfy/dungeonfy/java.tar.gz", "--directory=" + OS.get_data_dir() + "/bootfy/dungeonfy"])
 	if !FileAccess.file_exists("user://dungeonfy/dfysp-main/paper.jar"):
 		downloading = "Paper"
 		$Paper.request(PAPER)
 	else:
 		$Button.disabled = false
+		$Wait.hide()
 		$AnimationPlayer.play("slide_back")
 		manage_server()
 
@@ -230,7 +250,8 @@ func _on_paper_request_completed(_result: int, _response_code: int, _headers: Pa
 	file.store_buffer(body)
 	file.close()
 
-	$Button.disabled = false
+	$Button.disabled = false 
+	$Wait.hide()
 	$AnimationPlayer.play("slide_back")
 
 
@@ -302,6 +323,20 @@ func _notification(what):
 		get_tree().quit()
 
 
+func _on_z_request_completed(_result: int, _response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+	if OS.get_name() == "Windows":
+		var file = FileAccess.open("user://dungeonfy/7za-windows-x86.exe", FileAccess.WRITE)
+		file.store_buffer(body)
+		file.close()
+	else:
+		var file = FileAccess.open("user://dungeonfy/7zz-linux-x64", FileAccess.WRITE)
+		file.store_buffer(body)
+		file.close()
+		FileAccess.set_unix_permissions("user://dungeonfy/7zz-linux-x64", 511) # set permissions. For some reason chmod 777 = godot 511????
+	$Button.disabled = false
+	$"7z-Download".hide()
+	
+
 # steal a function from a random Godot plugin 
 func rmdir(directory: String) -> void:
 	for file in DirAccess.get_files_at(directory):
@@ -309,3 +344,35 @@ func rmdir(directory: String) -> void:
 	for dir in DirAccess.get_directories_at(directory):
 		rmdir(directory.path_join(dir))
 	DirAccess.remove_absolute(directory)
+
+func unzip(file: String, destination: String) -> void:
+	var output = []
+	if OS.get_name() == "Windows":
+		# Windows Code
+		OS.execute(OS.get_user_data_dir().path_join("dungeonfy/7za-windows-x86.exe"), ["x", "-o" + destination, "-y", file], output)
+	else:
+		# Linux Code (MacOS: TODO)
+		OS.execute(OS.get_user_data_dir().path_join("dungeonfy/7zz-linux-x64"), ["x", "-o" + destination, "-y", file], output)
+	print(output)
+
+# I hate conflicting standards
+func untar(file: String, destination: String) -> void:
+	OS.execute("tar", ["-xf", file, "--directory", destination])
+
+
+var debug = preload("res://debug.tscn")
+var debugInstance = null
+
+func _on_debug_pressed() -> void:
+	if debugInstance == null:
+		debugInstance = debug.instantiate()
+	
+	add_child(debugInstance)
+	debugInstance.show()
+	debugInstance.close_requested.connect(_close_debug_window)
+	
+func _close_debug_window() -> void:
+	if debugInstance == null:
+		return
+	debugInstance.visible = false
+	remove_child(debugInstance)

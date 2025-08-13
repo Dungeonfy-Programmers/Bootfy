@@ -257,12 +257,12 @@ func _on_map_downloader_request_completed(result: int, response_code: int, _head
 	
 	file.store_buffer(body)
 	file.close()
-	
-	if OS.get_name() == "Windows":
+	unzip(current_download['location'], OS.get_user_data_dir().path_join("dungeonfy/dfysp-main/mappacks"))
+	#if OS.get_name() == "Windows":
 		# Windows is the most annoying operating system I've ever had the displeasure of interacting with
-		OS.execute("powershell.exe", ["-Command", "Expand-Archive -Path '%s' -DestinationPath '%s' -Force" % [current_download['location'].replace("/", "\\").replace("'", "''"), OS.get_user_data_dir().path_join("dungeonfy\\dfysp-main\\mappacks").replace("'", "''")]])
-	else:
-		OS.execute("unzip", ["-o", current_download['location'], "-d", OS.get_user_data_dir().path_join("dungeonfy/dfysp-main/mappacks")])
+	#	OS.execute("powershell.exe", ["-Command", "Expand-Archive '" + current_download['location'] + "' -DestinationPath " + OS.get_user_data_dir().path_join("dungeonfy/dfysp-main/mappacks")]) # what is this disgusting syntax?? The *nix user inside of me is screaming
+	#else:
+		#OS.execute("unzip", ["-o", current_download['location'], "-d", OS.get_user_data_dir().path_join("dungeonfy/dfysp-main/mappacks")])
 	if DirAccess.dir_exists_absolute(map_download_path.path_join("ul_void/playerdata")):
 		rmdir(map_download_path.path_join("ul_void/playerdata"))
 	DirAccess.rename_absolute(OS.get_user_data_dir().path_join("dungeonfy/dfysp-main/ul_void/playerdata"), map_download_path.path_join("ul_void/playerdata"))
@@ -281,6 +281,15 @@ func rmdir(directory: String) -> void:
 		rmdir(directory.path_join(dir))
 	DirAccess.remove_absolute(directory)
 
+func unzip(file: String, destination: String) -> void:
+	var output = []
+	if OS.get_name() == "Windows":
+		# Windows Code
+		OS.execute(OS.get_user_data_dir().path_join("dungeonfy/7za-windows-x86.exe"), ["x", "-o" + destination, "-y", file], output)
+	else:
+		# Linux Code (MacOS: TODO)
+		OS.execute(OS.get_user_data_dir().path_join("dungeonfy/7zz-linux-x64"), ["x", "-o" + destination, "-y", file], output)
+	print(output)
 
 func _on_skript_map_downloader_request_completed(result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result != OK or response_code != 200:
